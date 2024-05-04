@@ -17,7 +17,7 @@ from vendor.serializers import VendorSerializer, VendorPerformance, PurchaseOrde
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def vendors(request, vendor_id=None):
-    response = {"status_code": 500, "message": "Internal Server Error"}
+    response = {"status_code": 500}
     try:
         if request.method == 'GET':
             if vendor_id is None:
@@ -53,11 +53,15 @@ def vendors(request, vendor_id=None):
             response['status_code'] = 201
             response['message'] = "Vendor Created"
         elif request.method == 'DELETE':
-            # Handle DELETE request
-            pass
+            vendor = Vendor.objects.get(pk=vendor_id)
+            if not vendor:
+                raise NotFound(
+                    "Vendor not found with the ID"
+                )
+            vendor.delete()
+            response['status_code'] = 200
+            response['message'] = "Deleted"
 
-        # response['status_code'] = 200
-        # response['message'] = "Success"
         return JsonResponse(response)
     except Exception as e:
         response['traceback'] = str(e)
@@ -126,8 +130,14 @@ def orders(request, po_id=None):
             response['status_code'] = 201
             response['message'] = "Order Created"
         elif request.method == 'DELETE':
-            # Handle DELETE request
-            pass
+            po = PurchaseOrder.objects.get(pk=po_id)
+            if not po:
+                raise NotFound(
+                    "Vendor not found with the ID"
+                )
+            po.delete()
+            response['status_code'] = 200
+            response['message'] = "Deleted"
 
     except Exception as e:
         response['traceback'] = str(e)
