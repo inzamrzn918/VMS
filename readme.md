@@ -66,3 +66,6 @@ ALL THE ENDPOINTS ARE PUBLIC AND AVAILABLE @ PORT 8000
 | /purchase_orders/{po_id}/acknowledge      | POST   | Acknowledge the order       |
 
 ```
+
+## POSTMAN COLLECTION
+Postman collection with request body and proper URL [Download](vms.json)
